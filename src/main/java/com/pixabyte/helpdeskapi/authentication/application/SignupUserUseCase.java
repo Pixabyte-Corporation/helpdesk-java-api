@@ -8,14 +8,17 @@ public class SignupUserUseCase {
     private final UserRepository userRepository;
     private final OrganizationRepository organizationRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+
     public SignupUserUseCase(
             UserRepository userRepository,
             OrganizationRepository organizationRepository,
-            RoleRepository roleRepository
-    ) {
+            RoleRepository roleRepository,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.organizationRepository = organizationRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -31,21 +34,22 @@ public class SignupUserUseCase {
         if (userOpt.isPresent()) {
             throw new UserAlreadyExists("El usuario ya existe con ese correo");
         }
-        var organizationOpt = organizationRepository.findOrganizationById(request.id());
+        var organizationOpt = organizationRepository.findOrganizationById(request.organizationId());
         if (organizationOpt.isEmpty()) {
             throw new OrganizationNotFound();
         }
-        var roleOpt = roleRepository.findRoleById(request.id());
+        var roleOpt = roleRepository.findRoleById(request.roleId());
         if (roleOpt.isEmpty()) {
             throw new RoleNotFound();
         }
+        var hashedPassword = passwordEncoder.encode(request.password());
         var user = User.builder()
                 .id(request.id())
                 .organizationId(request.organizationId())
                 .roleId(request.roleId())
                 .name(request.name())
                 .email(request.email())
-                .password(request.password())
+                .password(hashedPassword)
                 .build();
         userRepository.save(user);
     }

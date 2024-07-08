@@ -7,6 +7,7 @@ import com.pixabyte.helpdeskapi.authentication.infrastructure.persistence.UserEn
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class PostgresUserRepository implements UserRepository {
@@ -15,6 +16,24 @@ public class PostgresUserRepository implements UserRepository {
 
     public PostgresUserRepository(JpaUserRepository jpaUserRepository) {
         this.jpaUserRepository = jpaUserRepository;
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        var entityOpt = jpaUserRepository.findById(id);
+        if (entityOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        var entity = entityOpt.get();
+        var user = User.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .email(entity.getEmail())
+                .password(entity.getPassword())
+                .organizationId(entity.getOrganizationId())
+                .roleId(entity.getRoleId())
+                .build();
+        return Optional.of(user);
     }
 
     @Override

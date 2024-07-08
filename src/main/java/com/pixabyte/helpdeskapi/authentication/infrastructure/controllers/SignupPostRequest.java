@@ -1,5 +1,7 @@
 package com.pixabyte.helpdeskapi.authentication.infrastructure.controllers;
 
+import com.pixabyte.helpdeskapi.authentication.application.SignupUserRequest;
+
 import java.util.UUID;
 
 public record SignupPostRequest(
@@ -10,4 +12,5 @@ public record SignupPostRequest(
         String password,
         String name
 ) {
+
 }
