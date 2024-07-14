@@ -1,6 +1,7 @@
 package com.pixabyte.helpdeskapi.authentication.application;
 
 import com.pixabyte.helpdeskapi.authentication.domain.*;
+import com.pixabyte.helpdeskapi.shared.domain.EventBus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,16 +10,18 @@ public class SignupUserUseCase {
     private final OrganizationRepository organizationRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EventBus eventBus;
 
     public SignupUserUseCase(
             UserRepository userRepository,
             OrganizationRepository organizationRepository,
             RoleRepository roleRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder, EventBus eventBus) {
         this.userRepository = userRepository;
         this.organizationRepository = organizationRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.eventBus = eventBus;
     }
 
     /**
@@ -43,15 +46,16 @@ public class SignupUserUseCase {
             throw new RoleNotFound();
         }
         var hashedPassword = passwordEncoder.encode(request.password());
-        var user = User.builder()
-                .id(request.id())
-                .organizationId(request.organizationId())
-                .roleId(request.roleId())
-                .name(request.name())
-                .email(request.email())
-                .password(hashedPassword)
-                .build();
+        var user = User.createUser(
+                request.id(),
+                request.email(),
+                hashedPassword,
+                request.name(),
+                request.organizationId(),
+                request.roleId()
+        );
         userRepository.save(user);
+        user.pullEvents().forEach(eventBus::publish);
     }
 
 }

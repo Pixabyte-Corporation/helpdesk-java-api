@@ -63,6 +63,7 @@ public class PostgresUserRepository implements UserRepository {
                 .password(user.getPassword())
                 .organizationId(user.getOrganizationId())
                 .roleId(user.getRoleId())
+                .verifiedAt(user.getVerifiedAt())
                 .build();
         jpaUserRepository.save(entity);
     }

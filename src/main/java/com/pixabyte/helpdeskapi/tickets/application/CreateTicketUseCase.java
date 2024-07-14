@@ -1,30 +1,45 @@
 package com.pixabyte.helpdeskapi.tickets.application;
 
+import com.pixabyte.helpdeskapi.shared.domain.EventBus;
 import com.pixabyte.helpdeskapi.tickets.domain.Ticket;
 import com.pixabyte.helpdeskapi.tickets.domain.TicketRepository;
 import org.springframework.stereotype.Service;
+
+import static com.pixabyte.helpdeskapi.tickets.domain.Ticket.createTicket;
 
 @Service
 public class CreateTicketUseCase {
 
     private final TicketRepository ticketRepository;
+    private final EventBus eventBus;
 
-    public CreateTicketUseCase(TicketRepository ticketRepository) {
+    public CreateTicketUseCase(TicketRepository ticketRepository, EventBus eventBus) {
         this.ticketRepository = ticketRepository;
+        this.eventBus = eventBus;
     }
 
     public void execute(CreateTicketCommand command) {
-        Ticket ticket = Ticket.builder()
-                .id(command.ticketId())
-                .title(command.title())
-                .description(command.description())
-                .status(command.status())
-                .priority(command.priority())
-                .projectId(command.projectId())
-                .reporterId(command.reporterId())
-                .assignedToId(command.assignedTo())
-                .build();
+        Ticket ticket = createTicket(
+                command.ticketId(),
+                command.title(),
+                command.description(),
+                command.priority(),
+                command.status(),
+                command.reporterId(),
+                command.assignedTo(),
+                command.projectId()
+        );
         ticketRepository.save(ticket);
+        ticket.pullEvents().forEach(eventBus::publish);
     }
 
 }
+
+
+
+/**
+ * 1. Completar el módulo de tickets
+ * 2. Guardar los eventos de dominio en base de datos
+ * 3. Comenzar con el módulo de comentarios
+ * 4.
+ * */

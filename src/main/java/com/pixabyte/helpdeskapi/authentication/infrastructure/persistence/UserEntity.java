@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
@@ -26,6 +27,7 @@ public class UserEntity {
     private String password;
     private UUID organizationId;
     private UUID roleId;
+    private LocalDateTime verifiedAt;
     private Long createdAt;
     private Long updatedAt;
 
