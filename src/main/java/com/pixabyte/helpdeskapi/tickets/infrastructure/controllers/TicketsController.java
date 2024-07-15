@@ -8,6 +8,10 @@ import com.pixabyte.helpdeskapi.tickets.application.SearchTicketsUseCase;
 import com.pixabyte.helpdeskapi.tickets.domain.TicketPagination;
 import com.pixabyte.helpdeskapi.tickets.domain.TicketsFilter;
 import com.pixabyte.helpdeskapi.tickets.domain.Ticket;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "Tickets", description = "Operaciones relacionadas con incidencias o tickets")
 public class TicketsController {
 
     private final CreateTicketUseCase createTicketUseCase;
@@ -27,9 +32,11 @@ public class TicketsController {
         this.searchTicketsUseCase = searchTicketsUseCase;
     }
 
+    @Operation(summary = "Creates a ticket for a given project id", description = "It will generate a TicketCreated event")
+    @ApiResponse(responseCode = "200", description = "Ticket created successfully")
     @PutMapping("/projects/{projectId}/tickets")
     public ResponseEntity<Void> createTicket(
-            @PathVariable("projectId") String projectId,
+            @Parameter(description = "Project ID") @PathVariable("projectId") String projectId,
             @RequestBody CreateTicketPutRequest body,
             Authentication authentication
             ) {
