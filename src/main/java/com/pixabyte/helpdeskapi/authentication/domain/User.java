@@ -48,8 +48,8 @@ public class User {
     }
 
     public List<DomainEvent> pullEvents() {
-        List<DomainEvent> pulledEvents = events;
-        events = new ArrayList<>();
+        List<DomainEvent> pulledEvents = new ArrayList<>(events);
+        events.clear();
         return pulledEvents;
     }
 

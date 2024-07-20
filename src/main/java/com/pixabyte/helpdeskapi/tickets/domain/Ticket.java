@@ -51,7 +51,51 @@ public class Ticket {
         return ticket;
     }
 
+    public void changeStatus(String status, UUID modifiedByUUID) {
+        if (Objects.isNull(this.events)) {
+            this.events = new ArrayList<>();
+        }
+        if (status.equals(this.status)) {
+            return;
+        }
+        String previousStatus = this.status;
+        this.status = status;
+        TicketStatusChanged event = new TicketStatusChanged(
+                previousStatus,
+                status,
+                this.id,
+                modifiedByUUID
+        );
+        this.events.add(event);
+    }
+
+    public void changeAssignee(UUID assignee, UUID modifiedByUUID) {
+        if (Objects.isNull(this.events)) {
+            this.events = new ArrayList<>();
+        }
+        if (Objects.isNull(assignee) && Objects.isNull(assignedToId)) {
+            return;
+        }
+
+        if (Objects.nonNull(assignee) && assignee.equals(getAssignedToId())) {
+            return;
+        }
+        UUID previousAssignee = this.assignedToId;
+        this.assignedToId = assignee;
+        TicketAssigneeChanged ticketAssigneeChanged = new TicketAssigneeChanged(
+                previousAssignee,
+                assignee,
+                this.id,
+                modifiedByUUID
+        );
+        this.events.add(ticketAssigneeChanged);
+    }
+
+
     public List<DomainEvent> pullEvents() {
+        if (Objects.isNull(events)) {
+            events = new ArrayList<>();
+        }
         List<DomainEvent> pulledEvents = new ArrayList<>(events);
         events.clear();
         return pulledEvents;

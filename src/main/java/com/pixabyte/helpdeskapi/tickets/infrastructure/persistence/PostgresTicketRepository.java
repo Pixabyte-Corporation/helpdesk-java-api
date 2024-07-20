@@ -11,9 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Repository
 public class PostgresTicketRepository implements TicketRepository {
@@ -39,6 +37,7 @@ public class PostgresTicketRepository implements TicketRepository {
                 .createdBy(ticket.getReporterId())
                 .build();
         jpaTicketRepository.save(entity);
+        int a = 1;
     }
 
     @Override
@@ -58,6 +57,12 @@ public class PostgresTicketRepository implements TicketRepository {
                 pageTickets.getSize(),
                 pageTickets.getTotalElements()
         );
+    }
+
+    @Override
+    public Optional<Ticket> findById(UUID id) {
+        Optional<TicketEntity> ticketEntityOpt = jpaTicketRepository.findById(id);
+        return ticketEntityOpt.map(this::toTicket);
     }
 
     private Ticket toTicket(TicketEntity entity) {
