@@ -1,29 +1,25 @@
 package com.pixabyte.helpdeskapi.tickets.domain;
 
-import com.pixabyte.helpdeskapi.shared.domain.DomainEvent;
+import com.pixabyte.helpdeskapi.shared.domain.AggregateRoot;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Builder(toBuilder = true)
-public class Ticket {
+public class Ticket extends AggregateRoot {
     private UUID id;
     private String title;
     private String description;
     private Integer priority;
-    private String status;
+    private TicketStatus status;
     private UUID reporterId;
     private UUID assignedToId;
     private UUID projectId;
 
-    private List<DomainEvent> events;
-
-    public static Ticket createTicket(UUID id, String title, String description, Integer priority, String status, UUID reporterId, UUID assignedToId, UUID projectId) {
+    public static Ticket createTicket(UUID id, String title, String description, Integer priority, TicketStatus status, UUID reporterId, UUID assignedToId, UUID projectId) {
         Ticket ticket = Ticket.builder()
                 .id(id)
                 .title(title)
@@ -34,45 +30,56 @@ public class Ticket {
                 .reporterId(reporterId)
                 .assignedToId(assignedToId)
                 .build();
-        if (Objects.isNull(ticket.events)) {
-            ticket.events = new ArrayList<>();
-        }
+
         var event = new TicketCreated(
                 id,
                 title,
                 description,
                 priority,
-                status,
+                status.getValue(),
                 reporterId,
                 assignedToId,
                 projectId
         );
-        ticket.events.add(event);
+        ticket.recordEvent(event);
         return ticket;
     }
 
-    public void changeStatus(String status, UUID modifiedByUUID) {
-        if (Objects.isNull(this.events)) {
-            this.events = new ArrayList<>();
-        }
-        if (status.equals(this.status)) {
+    public void update(String title, String description, TicketStatus ticketStatus, UUID assignedTo, Integer priority, UUID modifiedBy) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        changeStatus(ticketStatus, modifiedBy);
+        changeAssignee(assignedTo, modifiedBy);
+        TicketUpdated event = new TicketUpdated(
+                id,
+                this.title,
+                this.description,
+                this.priority,
+                this.status.getValue(),
+                this.assignedToId
+        );
+        recordEvent(event);
+    }
+
+
+    private void changeStatus(TicketStatus status, UUID modifiedByUUID) {
+        if (this.status.equals(status)) {
             return;
         }
-        String previousStatus = this.status;
+        TicketStatus previousStatus = this.status;
         this.status = status;
         TicketStatusChanged event = new TicketStatusChanged(
-                previousStatus,
-                status,
+                previousStatus.getValue(),
+                status.getValue(),
                 this.id,
                 modifiedByUUID
         );
-        this.events.add(event);
+        this.recordEvent(event);
     }
 
-    public void changeAssignee(UUID assignee, UUID modifiedByUUID) {
-        if (Objects.isNull(this.events)) {
-            this.events = new ArrayList<>();
-        }
+    private void changeAssignee(UUID assignee, UUID modifiedByUUID) {
+
         if (Objects.isNull(assignee) && Objects.isNull(assignedToId)) {
             return;
         }
@@ -88,18 +95,6 @@ public class Ticket {
                 this.id,
                 modifiedByUUID
         );
-        this.events.add(ticketAssigneeChanged);
+        this.recordEvent(ticketAssigneeChanged);
     }
-
-
-    public List<DomainEvent> pullEvents() {
-        if (Objects.isNull(events)) {
-            events = new ArrayList<>();
-        }
-        List<DomainEvent> pulledEvents = new ArrayList<>(events);
-        events.clear();
-        return pulledEvents;
-    }
-
-
 }

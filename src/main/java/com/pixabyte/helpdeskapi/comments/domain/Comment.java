@@ -1,19 +1,16 @@
 package com.pixabyte.helpdeskapi.comments.domain;
 
-import com.pixabyte.helpdeskapi.shared.domain.DomainEvent;
+import com.pixabyte.helpdeskapi.shared.domain.AggregateRoot;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Builder
-public class Comment {
+public class Comment extends AggregateRoot {
 
     private UUID id;
     private String content;
@@ -21,8 +18,6 @@ public class Comment {
     private UUID ticketId;
     private UUID ownerId;
     private UUID parentCommentId;
-
-    private List<DomainEvent> events;
 
     public static Comment createComment(UUID id, String content, UUID ticketId, UUID ownerId, UUID parentCommentId) {
         Comment c = Comment.builder()
@@ -33,23 +28,15 @@ public class Comment {
                 .ticketId(ticketId)
                 .parentCommentId(parentCommentId)
                 .build();
-        if (Objects.isNull(c.getEvents())) {
-            c.events = new ArrayList<>();
-        }
         CommentCreatedEvent commentCreatedEvent = new CommentCreatedEvent(
                 id,
                 content,
                 ownerId,
                 ticketId,
                 parentCommentId);
-        c.events.add(commentCreatedEvent);
+        c.recordEvent(commentCreatedEvent);
         return c;
     }
 
-    public List<DomainEvent> pullEvents() {
-        List<DomainEvent> pulledEvents = events;
-        events = new ArrayList<>();
-        return pulledEvents;
-    }
 
 }

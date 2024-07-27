@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  loki:
+    image: grafana/loki:2.8.0
+    ports:
+      - "3100:3100"
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    depends_on:
+      - loki
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.15.0
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./logstash/logstash.conf:/user/share/logstash/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.15.0
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch

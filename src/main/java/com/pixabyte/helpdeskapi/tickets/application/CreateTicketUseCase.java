@@ -3,6 +3,7 @@ package com.pixabyte.helpdeskapi.tickets.application;
 import com.pixabyte.helpdeskapi.shared.domain.EventBus;
 import com.pixabyte.helpdeskapi.tickets.domain.Ticket;
 import com.pixabyte.helpdeskapi.tickets.domain.TicketRepository;
+import com.pixabyte.helpdeskapi.tickets.domain.TicketStatus;
 import org.springframework.stereotype.Service;
 
 import static com.pixabyte.helpdeskapi.tickets.domain.Ticket.createTicket;
@@ -24,7 +25,7 @@ public class CreateTicketUseCase {
                 command.title(),
                 command.description(),
                 command.priority(),
-                command.status(),
+                TicketStatus.OPEN,
                 command.reporterId(),
                 command.assignedTo(),
                 command.projectId()

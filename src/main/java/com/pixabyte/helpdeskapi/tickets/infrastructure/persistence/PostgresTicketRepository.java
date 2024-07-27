@@ -1,10 +1,7 @@
 package com.pixabyte.helpdeskapi.tickets.infrastructure.persistence;
 
 import com.pixabyte.helpdeskapi.shared.domain.ResultsPage;
-import com.pixabyte.helpdeskapi.tickets.domain.TicketPagination;
-import com.pixabyte.helpdeskapi.tickets.domain.TicketsFilter;
-import com.pixabyte.helpdeskapi.tickets.domain.Ticket;
-import com.pixabyte.helpdeskapi.tickets.domain.TicketRepository;
+import com.pixabyte.helpdeskapi.tickets.domain.*;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,7 +25,7 @@ public class PostgresTicketRepository implements TicketRepository {
                 .id(ticket.getId())
                 .title(ticket.getTitle())
                 .description(ticket.getDescription())
-                .status(ticket.getStatus())
+                .status(ticket.getStatus().getValue())
                 .priority(ticket.getPriority())
                 .projectId(ticket.getProjectId())
                 .reportToUserId(ticket.getReporterId())
@@ -70,7 +67,7 @@ public class PostgresTicketRepository implements TicketRepository {
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
-                .status(entity.getStatus())
+                .status(TicketStatus.of(entity.getStatus()))
                 .priority(entity.getPriority())
                 .reporterId(entity.getReportToUserId())
                 .assignedToId(entity.getAssignedToUserId())
