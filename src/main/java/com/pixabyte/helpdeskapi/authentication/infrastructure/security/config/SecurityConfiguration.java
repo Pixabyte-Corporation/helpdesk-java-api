@@ -31,7 +31,8 @@ public class SecurityConfiguration {
                         "/v3/api-docs**",
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
-                        "/swagger-ui.html")
+                        "/swagger-ui.html",
+                        "/actuator/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -40,6 +41,7 @@ public class SecurityConfiguration {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new MDCFilter(), UsernamePasswordAuthenticationFilter.class)
         ;
         return http.build();
     }

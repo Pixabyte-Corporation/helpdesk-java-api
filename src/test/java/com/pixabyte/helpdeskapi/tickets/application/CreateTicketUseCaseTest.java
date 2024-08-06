@@ -1,7 +1,9 @@
 package com.pixabyte.helpdeskapi.tickets.application;
 
 import com.pixabyte.helpdeskapi.shared.domain.EventBus;
-import com.pixabyte.helpdeskapi.tickets.domain.TicketCreated;
+import com.pixabyte.helpdeskapi.tickets.application.create.CreateTicketCommand;
+import com.pixabyte.helpdeskapi.tickets.application.create.CreateTicketUseCase;
+import com.pixabyte.helpdeskapi.tickets.domain.events.TicketCreated;
 import com.pixabyte.helpdeskapi.tickets.domain.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

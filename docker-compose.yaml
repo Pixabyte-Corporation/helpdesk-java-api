@@ -16,26 +16,20 @@ services:
     depends_on:
       - loki
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    environment:
-      - discovery.type=single-node
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-
-  logstash:
-    image: docker.elastic.co/logstash/logstash:7.15.0
-    ports:
-      - "5044:5044"
+  tempo:
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
-      - ./logstash/logstash.conf:/user/share/logstash/pipeline/logstash.conf
-    depends_on:
-      - elasticsearch
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.15.0
+      - ./tempo.yaml:/etc/tempo.yaml
     ports:
-      - "5601:5601"
-    depends_on:
-      - elasticsearch
+      - "3200:3200"   # tempo
+      - "4318:4318"   # otlp grpc
+      - "4317:4317"
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

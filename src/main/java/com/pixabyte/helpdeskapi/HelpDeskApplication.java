@@ -22,14 +22,4 @@ public class HelpDeskApplication {
     }
     private final Logger logger = LoggerFactory.getLogger(HelpDeskApplication.class);
 
-    @GetMapping("/greeting")
-    public String hello(Authentication authentication) {
-        HelpDeskUserDetails userDetails = (HelpDeskUserDetails) authentication.getPrincipal();
-        logger.warn("El usuario autenticado tiene estos datos: id:{} email:{} organizationId:{}",
-                userDetails.getId().toString(),
-                userDetails.getEmail(),
-                userDetails.getOrganizationId().toString());
-        return "Hola";
-    }
-
 }

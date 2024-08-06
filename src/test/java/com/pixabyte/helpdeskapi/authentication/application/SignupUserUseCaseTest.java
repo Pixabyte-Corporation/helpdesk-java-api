@@ -1,6 +1,14 @@
 package com.pixabyte.helpdeskapi.authentication.application;
 
+import com.pixabyte.helpdeskapi.authentication.application.signup.SignupUserRequest;
+import com.pixabyte.helpdeskapi.authentication.application.signup.SignupUserUseCase;
 import com.pixabyte.helpdeskapi.authentication.domain.*;
+import com.pixabyte.helpdeskapi.authentication.domain.exceptions.OrganizationNotFound;
+import com.pixabyte.helpdeskapi.authentication.domain.exceptions.RoleNotFound;
+import com.pixabyte.helpdeskapi.authentication.domain.exceptions.UserAlreadyExists;
+import com.pixabyte.helpdeskapi.authentication.domain.repositories.OrganizationRepository;
+import com.pixabyte.helpdeskapi.authentication.domain.repositories.RoleRepository;
+import com.pixabyte.helpdeskapi.authentication.domain.repositories.UserRepository;
 import com.pixabyte.helpdeskapi.shared.domain.EventBus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

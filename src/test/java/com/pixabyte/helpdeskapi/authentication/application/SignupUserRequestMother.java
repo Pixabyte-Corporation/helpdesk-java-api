@@ -1,5 +1,7 @@
 package com.pixabyte.helpdeskapi.authentication.application;
 
+import com.pixabyte.helpdeskapi.authentication.application.signup.SignupUserRequest;
+
 import java.util.UUID;
 
 public class SignupUserRequestMother {

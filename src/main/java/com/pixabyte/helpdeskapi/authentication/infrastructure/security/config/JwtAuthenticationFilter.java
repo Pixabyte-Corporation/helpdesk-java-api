@@ -1,6 +1,6 @@
 package com.pixabyte.helpdeskapi.authentication.infrastructure.security.config;
 
-import com.pixabyte.helpdeskapi.authentication.domain.UserRepository;
+import com.pixabyte.helpdeskapi.authentication.domain.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -9,11 +9,10 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -85,6 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 userDetails.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(upat);
+        MDC.put("userId", user.getId().toString());
         filterChain.doFilter(request, response);
     }
 

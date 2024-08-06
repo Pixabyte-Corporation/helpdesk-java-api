@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Map;
 import java.util.UUID;
 
 @Getter
@@ -38,5 +39,8 @@ public class Comment extends AggregateRoot {
         return c;
     }
 
+    public Map<String, Object> toPrimitives() {
+        return null;
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.pixabyte.helpdeskapi.projects.application;
 
+import com.pixabyte.helpdeskapi.projects.application.create.CreateProjectCommand;
+import com.pixabyte.helpdeskapi.projects.application.create.CreateProjectUseCase;
 import com.pixabyte.helpdeskapi.projects.domain.Project;
 import com.pixabyte.helpdeskapi.projects.domain.ProjectCreatedEvent;
 import com.pixabyte.helpdeskapi.projects.domain.ProjectRepository;
@@ -8,13 +10,11 @@ import com.pixabyte.helpdeskapi.shared.domain.EventBus;
 import com.pixabyte.helpdeskapi.shared.domain.ParagraphMother;
 import com.pixabyte.helpdeskapi.shared.domain.UuidMother;
 import com.pixabyte.helpdeskapi.shared.domain.WordMother;
-import com.pixabyte.helpdeskapi.tickets.application.CreateTicketUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 

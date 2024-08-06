@@ -1,7 +1,7 @@
 package com.pixabyte.helpdeskapi.authentication.infrastructure.controllers;
 
-import com.pixabyte.helpdeskapi.authentication.application.LoginUserRequest;
-import com.pixabyte.helpdeskapi.authentication.application.LoginUserUseCase;
+import com.pixabyte.helpdeskapi.authentication.application.login.LoginUserRequest;
+import com.pixabyte.helpdeskapi.authentication.application.login.LoginUserUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

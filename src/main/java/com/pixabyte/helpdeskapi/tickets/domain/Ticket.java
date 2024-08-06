@@ -1,9 +1,12 @@
 package com.pixabyte.helpdeskapi.tickets.domain;
 
 import com.pixabyte.helpdeskapi.shared.domain.AggregateRoot;
+import com.pixabyte.helpdeskapi.shared.domain.values.UserId;
+import com.pixabyte.helpdeskapi.tickets.domain.events.*;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,6 +21,7 @@ public class Ticket extends AggregateRoot {
     private UUID reporterId;
     private UUID assignedToId;
     private UUID projectId;
+    private boolean isArchived;
 
     public static Ticket createTicket(UUID id, String title, String description, Integer priority, TicketStatus status, UUID reporterId, UUID assignedToId, UUID projectId) {
         Ticket ticket = Ticket.builder()
@@ -62,7 +66,6 @@ public class Ticket extends AggregateRoot {
         recordEvent(event);
     }
 
-
     private void changeStatus(TicketStatus status, UUID modifiedByUUID) {
         if (this.status.equals(status)) {
             return;
@@ -96,5 +99,19 @@ public class Ticket extends AggregateRoot {
                 modifiedByUUID
         );
         this.recordEvent(ticketAssigneeChanged);
+    }
+
+    public void archive(UserId archivedBy) {
+        isArchived = true;
+        var event = new TicketArchived(
+                id.toString(),
+                title,
+                archivedBy.value()
+        );
+        recordEvent(event);
+    }
+
+    public Map<String, Object> toPrimitives() {
+        return null;
     }
 }

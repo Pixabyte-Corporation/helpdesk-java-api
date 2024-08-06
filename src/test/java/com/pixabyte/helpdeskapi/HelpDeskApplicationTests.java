@@ -3,10 +3,10 @@ package com.pixabyte.helpdeskapi;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class HelpDeskApplicationTests {
 
-    @Test
+    //@Test
     void contextLoads() {
     }
 

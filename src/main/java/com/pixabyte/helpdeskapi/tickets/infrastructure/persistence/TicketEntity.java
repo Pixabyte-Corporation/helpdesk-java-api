@@ -28,6 +28,7 @@ public class TicketEntity {
     private UUID reportToUserId;
     private UUID assignedToUserId;
     private UUID projectId;
+    private Boolean isArchived;
     private Long createdAt;
     private Long updatedAt;
     private UUID createdBy;

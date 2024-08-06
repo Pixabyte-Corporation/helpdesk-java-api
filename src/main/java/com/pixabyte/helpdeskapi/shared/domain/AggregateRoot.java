@@ -3,6 +3,7 @@ package com.pixabyte.helpdeskapi.shared.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AggregateRoot {
 
@@ -21,6 +22,8 @@ public abstract class AggregateRoot {
     public List<DomainEvent> getDomainEvents() {
         return Collections.unmodifiableList(domainEvents);
     }
+
+    public abstract Map<String, Object> toPrimitives();
 
 
 }

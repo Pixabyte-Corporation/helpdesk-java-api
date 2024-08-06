@@ -1,11 +1,12 @@
 package com.pixabyte.helpdeskapi.notification.infrastructure;
 
 import com.pixabyte.helpdeskapi.authentication.domain.UserRegisteredEvent;
-import com.pixabyte.helpdeskapi.notification.application.SendVerificationEmailCommand;
-import com.pixabyte.helpdeskapi.notification.application.SendVerificationEmailUseCase;
+import com.pixabyte.helpdeskapi.notification.application.verification.SendVerificationEmailCommand;
+import com.pixabyte.helpdeskapi.notification.application.verification.SendVerificationEmailUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +19,7 @@ public class NotificationEventHandler {
         this.sendVerificationEmailUseCase = sendVerificationEmailUseCase;
     }
 
+    @Async
     @EventListener
     public void handleUserRegistered(UserRegisteredEvent event) {
         logger.info("NotificationEventHandler#handleUserRegistered - Event received");

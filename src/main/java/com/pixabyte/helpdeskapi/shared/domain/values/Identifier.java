@@ -1,6 +1,9 @@
 package com.pixabyte.helpdeskapi.shared.domain.values;
 
+import com.pixabyte.helpdeskapi.shared.domain.FieldValidationException;
+
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Identifier implements Serializable {
@@ -17,7 +20,28 @@ public abstract class Identifier implements Serializable {
     }
 
     private void ensureValidIdentifier(String value) throws IllegalArgumentException {
-        UUID.fromString(value);
+        if (Objects.isNull(value)) {
+            throw new FieldValidationException(
+                    "Identifier must have a value",
+                    "id",
+                    null
+            );
+        }
+        try {
+            UUID.fromString(value);
+        } catch (IllegalArgumentException e) {
+            throw new FieldValidationException(
+                    "Identifier is not valid",
+                    "id",
+                    value
+            );
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 
     @Override

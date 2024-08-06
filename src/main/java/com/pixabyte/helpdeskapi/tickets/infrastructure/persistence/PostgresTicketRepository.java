@@ -32,6 +32,7 @@ public class PostgresTicketRepository implements TicketRepository {
                 .assignedToUserId(ticket.getAssignedToId())
                 .updatedBy(ticket.getAssignedToId())
                 .createdBy(ticket.getReporterId())
+                .isArchived(ticket.isArchived())
                 .build();
         jpaTicketRepository.save(entity);
         int a = 1;
@@ -40,12 +41,11 @@ public class PostgresTicketRepository implements TicketRepository {
     @Override
     public ResultsPage<Ticket> findAll(TicketsFilter filter, TicketPagination pagination) {
         Specification<TicketEntity> spec = createSpecification(filter);
-
+        spec = spec.and(onlyActiveRecords());
         PageRequest pageRequest = PageRequest.of(
                 pagination.pageNumber(),
                 pagination.pageSize()
         );
-
         var pageTickets = jpaTicketRepository.findAll(spec, pageRequest)
                 .map(this::toTicket);
         return new ResultsPage<Ticket>(
@@ -72,6 +72,7 @@ public class PostgresTicketRepository implements TicketRepository {
                 .reporterId(entity.getReportToUserId())
                 .assignedToId(entity.getAssignedToUserId())
                 .projectId(entity.getProjectId())
+                .isArchived(entity.getIsArchived())
                 .build();
     }
 
@@ -99,6 +100,10 @@ public class PostgresTicketRepository implements TicketRepository {
             }
             return cb.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    private Specification<TicketEntity> onlyActiveRecords() {
+        return (root, query, cb) -> cb.equal(root.get("isArchived"), false);
     }
 
 

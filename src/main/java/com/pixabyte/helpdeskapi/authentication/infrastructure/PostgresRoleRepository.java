@@ -1,7 +1,7 @@
 package com.pixabyte.helpdeskapi.authentication.infrastructure;
 
 import com.pixabyte.helpdeskapi.authentication.domain.Role;
-import com.pixabyte.helpdeskapi.authentication.domain.RoleRepository;
+import com.pixabyte.helpdeskapi.authentication.domain.repositories.RoleRepository;
 import com.pixabyte.helpdeskapi.authentication.infrastructure.persistence.JpaRoleRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,8 @@
 package com.pixabyte.helpdeskapi.tickets.infrastructure.controllers;
 
 import com.pixabyte.helpdeskapi.authentication.infrastructure.security.config.HelpDeskUserDetails;
-import com.pixabyte.helpdeskapi.tickets.application.UpdateTicketCommand;
-import com.pixabyte.helpdeskapi.tickets.application.UpdateTicketUseCase;
+import com.pixabyte.helpdeskapi.tickets.application.update.UpdateTicketCommand;
+import com.pixabyte.helpdeskapi.tickets.application.update.UpdateTicketUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

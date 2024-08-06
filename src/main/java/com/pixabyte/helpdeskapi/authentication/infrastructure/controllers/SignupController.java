@@ -1,7 +1,7 @@
 package com.pixabyte.helpdeskapi.authentication.infrastructure.controllers;
 
-import com.pixabyte.helpdeskapi.authentication.application.SignupUserRequest;
-import com.pixabyte.helpdeskapi.authentication.application.SignupUserUseCase;
+import com.pixabyte.helpdeskapi.authentication.application.signup.SignupUserRequest;
+import com.pixabyte.helpdeskapi.authentication.application.signup.SignupUserUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

@@ -1,0 +1,31 @@
+<configuration>
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>http://localhost:3100/loki/api/v1/push</url>
+        </http>
+        <format>
+            <label>
+                <pattern>app=spring-boot-helpdesk,host=localhost:8080</pattern>
+            </label>
+            <message>
+                <pattern>
+                    {
+                        "traceId": "%X{traceId:-}",
+                        "spanId": "%X{spanId:-}",
+                        "timestamp": "%d{ISO8601}",
+                        "level": "%level",
+                        "thread": "%thread",
+                        "class": "%logger{36}",
+                        "message": "%message",
+                        "exception": "%exception",
+                        "userId": "%X{userId}"
+                    }
+                </pattern>
+            </message>
+        </format>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="LOKI" />
+    </root>
+</configuration>

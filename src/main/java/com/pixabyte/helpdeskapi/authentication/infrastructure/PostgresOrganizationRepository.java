@@ -1,7 +1,7 @@
 package com.pixabyte.helpdeskapi.authentication.infrastructure;
 
 import com.pixabyte.helpdeskapi.authentication.domain.Organization;
-import com.pixabyte.helpdeskapi.authentication.domain.OrganizationRepository;
+import com.pixabyte.helpdeskapi.authentication.domain.repositories.OrganizationRepository;
 import com.pixabyte.helpdeskapi.authentication.infrastructure.persistence.JpaOrganizationRepository;
 import org.springframework.stereotype.Repository;
 

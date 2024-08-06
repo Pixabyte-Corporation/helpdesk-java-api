@@ -1,9 +1,8 @@
 package com.pixabyte.helpdeskapi.comments.infrastructure.controllers;
 
-import com.pixabyte.helpdeskapi.comments.application.CommentRepresentation;
-import com.pixabyte.helpdeskapi.comments.application.GetCommentsCommand;
-import com.pixabyte.helpdeskapi.comments.application.GetCommentsUseCase;
-import org.springframework.http.HttpStatus;
+import com.pixabyte.helpdeskapi.comments.application.find.CommentRepresentation;
+import com.pixabyte.helpdeskapi.comments.application.find.GetCommentsCommand;
+import com.pixabyte.helpdeskapi.comments.application.find.GetCommentsUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

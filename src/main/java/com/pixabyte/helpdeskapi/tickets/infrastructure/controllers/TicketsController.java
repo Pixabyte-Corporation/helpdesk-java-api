@@ -2,9 +2,9 @@ package com.pixabyte.helpdeskapi.tickets.infrastructure.controllers;
 
 import com.pixabyte.helpdeskapi.authentication.infrastructure.security.config.HelpDeskUserDetails;
 import com.pixabyte.helpdeskapi.shared.domain.ResultsPage;
-import com.pixabyte.helpdeskapi.tickets.application.CreateTicketCommand;
-import com.pixabyte.helpdeskapi.tickets.application.CreateTicketUseCase;
-import com.pixabyte.helpdeskapi.tickets.application.SearchTicketsUseCase;
+import com.pixabyte.helpdeskapi.tickets.application.create.CreateTicketCommand;
+import com.pixabyte.helpdeskapi.tickets.application.create.CreateTicketUseCase;
+import com.pixabyte.helpdeskapi.tickets.application.search.SearchTicketsUseCase;
 import com.pixabyte.helpdeskapi.tickets.domain.TicketPagination;
 import com.pixabyte.helpdeskapi.tickets.domain.TicketsFilter;
 import com.pixabyte.helpdeskapi.tickets.domain.Ticket;

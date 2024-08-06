@@ -1,7 +1,7 @@
 package com.pixabyte.helpdeskapi.authentication.infrastructure.controllers;
 
-import com.pixabyte.helpdeskapi.authentication.application.VerifyUserCommand;
-import com.pixabyte.helpdeskapi.authentication.application.VerifyUserUseCase;
+import com.pixabyte.helpdeskapi.authentication.application.verify.VerifyUserCommand;
+import com.pixabyte.helpdeskapi.authentication.application.verify.VerifyUserUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
