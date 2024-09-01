@@ -1,6 +1,7 @@
 package com.pixabyte.helpdeskapi.shared.infrastructure.handler;
 
 import com.pixabyte.helpdeskapi.authentication.domain.exceptions.UserAlreadyExists;
+import com.pixabyte.helpdeskapi.comments.domain.CommentNotFound;
 import com.pixabyte.helpdeskapi.shared.domain.FieldValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,16 @@ public class HelpDeskExceptionHandler {
         ErrorResponse error = new ErrorResponse(exception.getMessage(),
                 exception.getMessageDetails());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+
+    @ExceptionHandler(CommentNotFound.class)
+    public ResponseEntity<ErrorResponse> handle(CommentNotFound exception) {
+        logger.error("FieldValidationException occurred - {}", exception.getMessage());
+        ErrorResponse error = new ErrorResponse(
+                "Comment does not exists",
+                "Comment does not exists");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
 }

@@ -1,11 +1,16 @@
 package com.pixabyte.helpdeskapi.comments.domain;
 
+import com.pixabyte.helpdeskapi.comments.domain.events.CommentCreatedEvent;
+import com.pixabyte.helpdeskapi.comments.domain.events.CommentUpdatedEvent;
+import com.pixabyte.helpdeskapi.comments.domain.values.CommentContent;
+import com.pixabyte.helpdeskapi.comments.domain.values.CommentId;
+import com.pixabyte.helpdeskapi.comments.domain.values.TicketId;
 import com.pixabyte.helpdeskapi.shared.domain.AggregateRoot;
+import com.pixabyte.helpdeskapi.shared.domain.values.LocalTimestamp;
+import com.pixabyte.helpdeskapi.shared.domain.values.UserId;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Map;
 import java.util.UUID;
 
@@ -13,30 +18,44 @@ import java.util.UUID;
 @Builder
 public class Comment extends AggregateRoot {
 
-    private UUID id;
-    private String content;
-    private LocalDateTime createdAt;
-    private UUID ticketId;
-    private UUID ownerId;
-    private UUID parentCommentId;
+    private CommentId id;
+    private CommentContent content;
+    private TicketId ticketId;
+    private UserId ownerId;
+    private CommentId parentCommentId;
+    private LocalTimestamp createdAt;
 
-    public static Comment createComment(UUID id, String content, UUID ticketId, UUID ownerId, UUID parentCommentId) {
+
+    public static Comment createComment(CommentId id, CommentContent content, TicketId ticketId, UserId ownerId, CommentId parentCommentId) {
         Comment c = Comment.builder()
                 .id(id)
                 .content(content)
-                .createdAt(LocalDateTime.now(ZoneId.of("UTC")))
+                .createdAt(LocalTimestamp.now())
                 .ownerId(ownerId)
                 .ticketId(ticketId)
                 .parentCommentId(parentCommentId)
                 .build();
         CommentCreatedEvent commentCreatedEvent = new CommentCreatedEvent(
-                id,
-                content,
-                ownerId,
-                ticketId,
-                parentCommentId);
+                UUID.fromString(id.value()),
+                content.value(),
+                ownerId.value(),
+                ticketId.value(),
+                parentCommentId.value());
         c.recordEvent(commentCreatedEvent);
         return c;
+    }
+
+    public void update(CommentContent content) {
+        CommentContent previousContent = this.content;
+        this.content = content;
+        var event = new CommentUpdatedEvent(
+                UUID.fromString(id.value()),
+                content.value(),
+                previousContent.value(),
+                ownerId.value(),
+                ticketId.value()
+        );
+        recordEvent(event);
     }
 
     public Map<String, Object> toPrimitives() {

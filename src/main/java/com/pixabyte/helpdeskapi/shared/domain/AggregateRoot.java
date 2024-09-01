@@ -19,10 +19,6 @@ public abstract class AggregateRoot {
         return events;
     }
 
-    public List<DomainEvent> getDomainEvents() {
-        return Collections.unmodifiableList(domainEvents);
-    }
-
     public abstract Map<String, Object> toPrimitives();
 
 

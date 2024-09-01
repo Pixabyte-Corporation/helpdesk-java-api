@@ -25,9 +25,9 @@ public class GetCommentsUseCase {
                 .filter(comment -> Objects.isNull(comment.getParentCommentId()))
                 .forEach(comment -> {
                     var cr = CommentRepresentation.builder()
-                        .id(comment.getId())
-                        .ownerId(comment.getOwnerId())
-                        .content(comment.getContent())
+                        .id(comment.getId().value())
+                        .ownerId(comment.getOwnerId().value())
+                        .content(comment.getContent().value())
                         .answers(new ArrayList<>())
                         .build();
                     parents.put(comment.getId().toString(), cr);
@@ -37,9 +37,9 @@ public class GetCommentsUseCase {
                 .filter(comment -> Objects.nonNull(comment.getParentCommentId()))
                 .forEach(comment -> {
                     var cr = CommentRepresentation.builder()
-                            .id(comment.getId())
-                            .ownerId(comment.getOwnerId())
-                            .content(comment.getContent())
+                            .id(comment.getId().value())
+                            .ownerId(comment.getOwnerId().value())
+                            .content(comment.getContent().value())
                             .answers(new ArrayList<>())
                             .build();
                     var parent = parents.get(comment.getParentCommentId().toString());

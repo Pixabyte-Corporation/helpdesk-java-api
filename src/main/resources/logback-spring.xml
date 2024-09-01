@@ -18,7 +18,11 @@
                         "class": "%logger{36}",
                         "message": "%message",
                         "exception": "%exception",
-                        "userId": "%X{userId}"
+                        "userId": "%X{userId}",
+                        "method": "%X{method}",
+                        "path": "%X{path}",
+                        "status": "%X{status}",
+                        "durationMs": "%X{durationMs}"
                     }
                 </pattern>
             </message>

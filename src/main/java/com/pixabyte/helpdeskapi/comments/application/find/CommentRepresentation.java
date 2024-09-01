@@ -9,8 +9,8 @@ import java.util.UUID;
 @Getter
 @Builder(toBuilder = true)
 public class CommentRepresentation {
-    private UUID id;
+    private String id;
     private String content;
-    private UUID ownerId;
+    private String ownerId;
     private List<CommentRepresentation> answers;
 }

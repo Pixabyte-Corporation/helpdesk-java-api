@@ -1,4 +1,4 @@
-package com.pixabyte.helpdeskapi.comments.domain;
+package com.pixabyte.helpdeskapi.comments.domain.events;
 
 import com.pixabyte.helpdeskapi.shared.domain.DomainEvent;
 
@@ -9,16 +9,16 @@ public class CommentCreatedEvent extends DomainEvent {
 
     private final String EVENT_NAME = "commentCreated";
     private final String content;
-    private final UUID ownerId;
-    private final UUID ticketId;
-    private final UUID parentCommentId;
+    private final String ownerId;
+    private final String ticketId;
+    private final String parentCommentId;
 
 
     public CommentCreatedEvent(UUID aggregateId,
                                String content,
-                               UUID ownerId,
-                               UUID ticketId,
-                               UUID parentCommentId) {
+                               String ownerId,
+                               String ticketId,
+                               String parentCommentId) {
         super(aggregateId);
         this.content = content;
         this.ownerId = ownerId;
